@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<info>
+	<id>adminuser</id>
+	<name>Admin users</name>
+	<description>Add adminuser group to a user allow him to manage users.
+He has no rights to the quota and to users in admin and adminuser group.
+He can add, delete users and manage groups.</description>
+	<version>1.0</version>
+	<licence>AGPL</licence>
+	<author>Vincent Prono</author>
+	<require>4</require>
+	<shipped>true</shipped>
+</info>

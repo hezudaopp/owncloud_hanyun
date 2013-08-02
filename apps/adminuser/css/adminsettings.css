@@ -1,0 +1,44 @@
+/**
+ * ownCloud - Admin users
+ *
+ * @author Vincent Prono
+ * @copyright 2012 Vincent Prono <vprono@gmail.com>
+ *
+ *copied largely on owncloud
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
+ * License as published by the Free Software Foundation; either
+ * version 3 of the License, or any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU AFFERO GENERAL PUBLIC LICENSE for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public
+ * License along with this library.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ */
+
+
+
+/* ADMINUSERS */
+form { display:inline; }
+table:not(.nostyle) th { height:2em; color:#999; }
+table:not(.nostyle) th, table:not(.nostyle) td { border-bottom:1px solid #ddd; padding:0 .5em; padding-left:.8em; text-align:left; font-weight:normal; }
+td.name { padding-left:.8em; }
+td.remove>img { visibility:hidden; }
+td.quota { width:12em; }
+td.quota>span { margin-right: 1.2em; color: #C7C7C7; }
+td.remove { width:1em; padding-right:1em; }
+tr:hover>td.remove>img { visibility:visible; cursor:pointer; }
+tr:hover>td.remove>img { float:right; }
+li.selected { background-color:#ddd; }
+#content>table:not(.nostyle) { margin-top:3em; }
+table:not(.nostyle) { width:100%; }
+#rightcontent { padding-left: 1em; }
+div.quota { float:right; display:block; position:absolute; right:25em; top:0; }
+div.quota>span { position:absolute; right:0em; white-space:nowrap; top: 0.7em }
+
+
