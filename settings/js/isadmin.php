@@ -18,3 +18,9 @@ if (OC_User::isAdminUser(OC_User::getUser())) {
 } else {
 	echo("var isadmin = false;");
 }
+
+// if (OC_User(OC_SubAdmin::isSubAdmin(OC_User::getUser()))) {
+// 	echo("var issubadmin = true;");
+// } else {
+// 	echo("var issubadmin = false;");
+// }

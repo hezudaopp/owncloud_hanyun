@@ -1,6 +1,7 @@
 <?php
-
-OC_JSON::checkAdminUser();
+// Jawinton, subadmin can toggle subadmin of a group
+OC_JSON::checkSubAdminUser();
+// OC_JSON::checkAdminUser();
 OCP\JSON::callCheck();
 
 $username = $_POST["username"];

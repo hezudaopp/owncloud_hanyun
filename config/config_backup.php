@@ -1,4 +1,6 @@
 <?php
+define("DEBUG", true);
+
 $CONFIG = array (
   'instanceid' => '51f9f72e8a247',
   'passwordsalt' => '0ac1700b7ce748207c585162279c53',

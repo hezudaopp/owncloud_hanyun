@@ -654,4 +654,25 @@ class OC_User {
 		setcookie("oc_token", null, -1);
 		setcookie("oc_remember_login", null, -1);
 	}
+
+	// Jawinton::begin
+	/**
+	 * @brief get the storage info of the user whose uid is $user.
+	 * @return string uid or false
+	 */
+	public static function getStorageInfo($user) {
+		if ( $user ) {
+			foreach(self::$_usedBackends as $backend) {
+				if($backend->implementsActions(OC_USER_BACKEND_GET_STORAGEINFO)) {
+					$result=$backend->getStorageInfo( $user );
+					if($result) {
+						return $result;
+					}
+				}
+			}
+		} else{
+			return false;
+		}
+	}
+	// Jawinton::end
 }

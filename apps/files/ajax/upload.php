@@ -94,6 +94,7 @@ if ($maxUploadFileSize >= 0 and $totalSize > $maxUploadFileSize) {
 }
 
 $result = array();
+$used = OCP\Util::computerFileSize($_POST['used']);	// Jawinton
 if (strpos($dir, '..') === false) {
 	$fileCount = count($files['name']);
 	for ($i = 0; $i < $fileCount; $i++) {
@@ -105,10 +106,12 @@ if (strpos($dir, '..') === false) {
 			// updated max file size after upload
 			$storageStats = \OCA\files\lib\Helper::buildFileStorageStatistics($dir);
 
+			$used += $meta['size'];	// Jawinton
 			$result[] = array('status' => 'success',
 				'mime' => $meta['mimetype'],
 				'size' => $meta['size'],
 				'id' => $meta['fileid'],
+				'used' => OCP\Util::humanFileSize($used),	// Jawinton
 				'name' => basename($target),
 				'originalname' => $files['name'][$i],
 				'uploadMaxFilesize' => $maxUploadFileSize,

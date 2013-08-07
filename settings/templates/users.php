@@ -20,17 +20,35 @@ $_['subadmingroups'] = array_flip($items);
 	<form id="newuser" autocomplete="off">
 		<input id="newusername" type="text" placeholder="<?php p($l->t('Login Name'))?>" /> <input
 			type="password" id="newuserpassword"
-			placeholder="<?php p($l->t('Password'))?>" /> <select
-			class="groupsselect"
-			id="newusergroups" data-placeholder="groups"
-			title="<?php p($l->t('Groups'))?>" multiple="multiple">
-			<?php foreach($_["groups"] as $group): ?>
-			<option value="<?php p($group['name']);?>">
-				<?php p($group['name']);?>
-			</option>
-			<?php endforeach;?>
-		</select> <input type="submit" value="<?php p($l->t('Create'))?>" />
+			placeholder="<?php p($l->t('Password'))?>" /> 
+			<!-- Jawinton -->
+			<?php if((bool) $_['isadmin']): ?>
+				<select
+				class="groupsselect"
+				id="newusergroups" data-placeholder="groups"
+				title="<?php p($l->t('Groups'))?>" multiple="multiple">
+				<?php foreach($_["groups"] as $group): ?>
+					<option value="<?php p($group['name']);?>">
+						<?php p($group['name']);?>
+					</option>
+				<?php endforeach;?>
+				</select>
+			<?php endif; ?>
+			<?php if (!(bool) $_['isadmin']): ?>
+				<span><input type="checkbox" id="newissubadmin"/><?php p($l->t('Group Admin')); ?></span>
+			<?php endif; ?>
+			<!-- Jawinton -->
+		<input type="submit" value="<?php p($l->t('Create User'))?>" />
 	</form>
+	<!-- Jawinton -->
+	<?php if((bool) $_['isadmin']): ?>
+		<form id="newgroup" autocomplete="off" style="float:right;">
+			<input id="newgroupname" type="text" placeholder="<?php p($l->t('Group Name'))?>" />
+			<input id="newgroupstorage" type="text" placeholder="<?php p($l->t('Group Storage'))?>" />
+			<input type="submit" value="<?php p($l->t('Create Group'))?>" />
+		</form>
+	<?php endif; ?>
+	<!-- Jawinton -->
 	<?php if((bool)$_['recoveryAdminEnabled']): ?>
 	<div class="recoveryPassword">
 	<input id="recoveryPassword"
@@ -40,7 +58,9 @@ $_['subadmingroups'] = array_flip($items);
 		   alt="<?php p($l->t('Enter the recovery password in order to recover the users files during password change'))?>"/>
 	</div>
 	<?php endif; ?>
-	<div class="quota">
+
+	<!-- Jawinton::begin -->
+	<!-- <div class="quota">
 		<span><?php p($l->t('Default Storage'));?></span>
 			<?php if((bool) $_['isadmin']): ?>
 			<select class='quota'>
@@ -77,7 +97,8 @@ $_['subadmingroups'] = array_flip($items);
 					</option>
 				</select>
 			<?php endif; ?>
-	</div>
+	</div> -->
+	<!-- Jawinton::end -->
 </div>
 
 <table class="hascontrols" data-groups="<?php p(implode(', ', $allGroups));?>">
@@ -91,6 +112,7 @@ $_['subadmingroups'] = array_flip($items);
 			<th id="headerSubAdmins"><?php p($l->t('Group Admin')); ?></th>
 			<?php endif;?>
 			<th id="headerQuota"><?php p($l->t('Storage')); ?></th>
+			<th id="headerQuota"><?php p($l->t('Storage Used')); ?></th>
 			<th id="headerRemove">&nbsp;</th>
 		</tr>
 	</thead>
@@ -125,7 +147,7 @@ $_['subadmingroups'] = array_flip($items);
 				class="subadminsselect"
 				data-username="<?php p($user['name']) ;?>"
 				data-subadmin="<?php p($user['subadmin']);?>"
-				data-placeholder="subadmins" title="<?php p($l->t('Group Admin'))?>"
+				data-placeholder="subadmins" title="<?php p($l->t('Group User'))?>"
 				multiple="multiple">
 					<?php foreach($_["subadmingroups"] as $group): ?>
 					<option value="<?php p($group);?>">
@@ -137,16 +159,18 @@ $_['subadmingroups'] = array_flip($items);
 			<?php endif;?>
 			<td class="quota">
 				<select class='quota-user'>
+					<!-- Jawinton::begin 
 					<option
-						<?php if($user['quota']=='default') print_unescaped('selected="selected"');?>
-							value='default'>
-						<?php p($l->t('Default'));?>
+						<?php if($user['quota']==$default_quota) print_unescaped('selected="selected"');?>
+							value='0 B'>
+						<?php p($l->t('0 B'));?>
 					</option>
 					<option
 					<?php if($user['quota']=='none') print_unescaped('selected="selected"');?>
 							value='none'>
 						<?php p($l->t('Unlimited'));?>
 					</option>
+					Jawinton::end -->
 					<?php foreach($_['quota_preset'] as $preset):?>
 					<option
 					<?php if($user['quota']==$preset) print_unescaped('selected="selected"');?>
@@ -165,6 +189,9 @@ $_['subadmingroups'] = array_flip($items);
 					</option>
 				</select>
 			</td>
+			<td class="used" style="padding-left:20px;">
+				<?php p($user['used']); ?>
+			</td>
 			<td class="remove">
 				<?php if($user['name']!=OC_User::getUser()):?>
 					<a href="#" class="action delete" original-title="<?php p($l->t('Delete'))?>">
@@ -176,3 +203,9 @@ $_['subadmingroups'] = array_flip($items);
 		<?php endforeach; ?>
 	</tbody>
 </table>
+<!-- Jawinton::begin -->
+<div style="float:right; margin-top:42px;margin-right:100px;">
+	<span><?php print_unescaped($l->t("Group storage infomation: all <strong>%s</strong>, assigned <strong><span id='group_assigned'>%s</span></strong>,  unassigned <strong><span id='group_unassigned'>%s</span></strong>, used <strong>%s</strong>", 
+	array($_["group_all"], $_["group_assigned"], $_["group_unassigned"], $_["group_used"])));?></span>
+</div>
+<!-- Jawinton::end -->

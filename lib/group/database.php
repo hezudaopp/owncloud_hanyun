@@ -45,12 +45,13 @@ class OC_Group_Database extends OC_Group_Backend {
 	/**
 	 * @brief Try to create a new group
 	 * @param string $gid The name of the group to create
+	 * 		  int $size The storage of the group to be created
 	 * @return bool
 	 *
 	 * Tries to create a new group. If the group name already exists, false will
 	 * be returned.
 	 */
-	public function createGroup( $gid ) {
+	public function createGroup( $gid, $size ) {	// Jawinton, add $size param
 		// Check for existence
 		$stmt = OC_DB::prepare( "SELECT `gid` FROM `*PREFIX*groups` WHERE `gid` = ?" );
 		$result = $stmt->execute( array( $gid ));
@@ -61,12 +62,49 @@ class OC_Group_Database extends OC_Group_Backend {
 		}
 		else{
 			// Add group and exit
-			$stmt = OC_DB::prepare( "INSERT INTO `*PREFIX*groups` ( `gid` ) VALUES( ? )" );
-			$result = $stmt->execute( array( $gid ));
+			$stmt = OC_DB::prepare( "INSERT INTO `*PREFIX*groups` ( `gid`, `size` ) VALUES( ?, ? )" );
+			$result = $stmt->execute( array( $gid, $size ));
 
 			return $result ? true : false;
 		}
 	}
+
+	// Jawinton::begin
+	/**
+	 * @brief Try to get a group's size
+	 * @param string $gid The name of the group
+	 * @return bool
+	 *
+	 * Tries to get a group's size. If the group name not exists, false will
+	 * be returned.
+	 */
+	public function getGroupSize( $gid ) {
+		$stmt = OC_DB::prepare( "SELECT `size` FROM `*PREFIX*groups` WHERE `gid` = ?" );
+		$result = $stmt->execute( array( $gid ));
+
+		if ( $row = $result->fetchRow() ) {
+			return $row['size'];
+		}
+		else{
+			return false;
+		}
+	}
+	// Jawinton::end
+
+	// Jawinton::begin
+	/**
+	 * @brief Try to modify an existing group's size
+	 * @param string $gid The name of the group to be modified
+	 * 		  int $size The storage of the group to be modfied
+	 * @return bool
+	 *
+	 * Tries to modify an existing group's size.
+	 */
+	public function modifyGroupSize ( $gid, $size ) {	// Jawinton, add $size param
+		$stmt = OC_DB::prepare( "UPDATE *PREFIX*groups SET `size` = ? WHERE `gid` = ?" );
+		$stmt->execute( array( $size, $gid ));
+	}
+	// Jawinton::end
 
 	/**
 	 * @brief delete a group

@@ -4,14 +4,31 @@
  * See the COPYING-README file.
  */
 
-function setQuota (uid, quota, ready) {
+function setQuota (obj, uid, quota, preQuota, ready) {
 	$.post(
 		OC.filePath('settings', 'ajax', 'setquota.php'),
-		{username: uid, quota: quota},
+		{
+			username: uid, 
+			quota: quota,
+			preQuota: preQuota,
+			groupUnassigned: $('#group_unassigned').text(),
+			groupAssigned: $('#group_assigned').text()
+		},
 		function (result) {
-			if (ready) {
-				ready(result.data.quota);
+			// Jawinton::begin
+			if (result.status != 'success') {
+					OC.dialogs.alert(result.data.message,
+						t('settings', 'Error setting quota'));
+					if (preQuota)
+						obj.val(result.data.preQuota);
+			} else {
+				if (ready) {
+					ready(result.data.quota);
+				}
+				$('#group_assigned').html(result.data.groupAssigned);
+				$('#group_unassigned').html(result.data.groupUnassigned);
 			}
+			// Jawinton::end
 		}
 	);
 }
@@ -92,7 +109,7 @@ var UserList = {
 		var groupsSelect = $('<select multiple="multiple" class="groupsselect" data-placehoder="Groups" title="' + t('settings', 'Groups') + '"></select>').attr('data-username', username).attr('data-user-groups', groups);
 		tr.find('td.groups').empty();
 		if (tr.find('td.subadmins').length > 0) {
-			var subadminSelect = $('<select multiple="multiple" class="subadminsselect" data-placehoder="subadmins" title="' + t('settings', 'Group Admin') + '">').attr('data-username', username).attr('data-user-groups', groups).attr('data-subadmin', subadmin);
+			var subadminSelect = $('<select multiple="multiple" class="subadminsselect" data-placehoder="subadmins" title="' + t('settings', 'Group User') + '">').attr('data-username', username).attr('data-user-groups', groups).attr('data-subadmin', subadmin);
 			tr.find('td.subadmins').empty();
 		}
 		$.each(this.availableGroups, function (i, group) {
@@ -139,8 +156,9 @@ var UserList = {
 		quotaSelect.on('change', function () {
 			var uid = $(this).parent().parent().attr('data-uid');
 			var quota = $(this).val();
-			setQuota(uid, quota);
+			setQuota($(this), uid, quota);	// Jawinton
 		});
+		tr.find('td.used').text('0 B');	// Jawinton
 	},
 	// From http://my.opera.com/GreyWyvern/blog/show.dml/1671288
 	alphanum: function(a, b) {
@@ -265,11 +283,14 @@ var UserList = {
 				})
 			};
 			var label;
-			if (isadmin) {
-				label = t('settings', 'add group');
-			} else {
-				label = null;
-			}
+			// Jawinton::begin
+			label = null;
+			// if (isadmin) {
+			// 	label = t('settings', 'add group');
+			// } else {
+			// 	label = null;
+			// }
+			// Jawinton::end
 			element.multiSelect({
 				createCallback: addGroup,
 				createText: label,
@@ -412,10 +433,16 @@ $(document).ready(function () {
 		$(this).children('img').click();
 	});
 
-	$('select.quota, select.quota-user').singleSelect().on('change', function () {
+	var quotaSelect = $('select.quota, select.quota-user').singleSelect();	// Jawinton
+	// quotaSelect.data('preQuota', $(this).val());	//Jawinton
+	var preQuota;
+	quotaSelect.on('focus', function () {
+        // Store the current value on focus and on change
+        preQuota = $(this).val();
+    }).on('change', function () {	// Jawinton
 		var uid = $(this).parent().parent().attr('data-uid');
 		var quota = $(this).val();
-		setQuota(uid, quota);
+		setQuota($(this), uid, quota, preQuota);	// Jawinton
 	});
 
 	$('#newuser').submit(function (event) {
@@ -434,14 +461,23 @@ $(document).ready(function () {
 				t('settings', 'Error creating user'));
 			return false;
 		}
-		var groups = $('#newusergroups').prev().children('div').data('settings').checked;
+
+		if (isadmin) // Jawinton
+			var groups = $('#newusergroups').prev().children('div').data('settings').checked;
+		// Jawinton::begin
+		if ($('#newissubadmin').attr("checked") == "checked" || isadmin)
+			var issubadmin = 1;
+		else
+			var issubadmin = 0;
+		// Jawinton::end
 		$('#newuser').get(0).reset();
 		$.post(
 			OC.filePath('settings', 'ajax', 'createuser.php'),
 			{
 				username: username,
 				password: password,
-				groups: groups
+				groups: groups,
+				issubadmin: issubadmin	// Jawinton
 			},
 			function (result) {
 				if (result.status != 'success') {
@@ -453,12 +489,62 @@ $(document).ready(function () {
 						UserList.availableGroups = $.unique($.merge(UserList.availableGroups, addedGroups));
 					}
 					if($('tr[data-uid="' + username + '"]').length === 0) {
-						UserList.add(username, username, result.data.groups, null, 'default', true);
+						// Jawinton::begin
+						var groupadmin = null;
+						if (issubadmin) groupadmin = result.data.groups;
+						UserList.add(username, username, result.data.groups, groupadmin, result.data.zeroquota, true);
+						// Jawinton::end
 					}
 				}
 			}
 		);
 	});
+
+	// Jawinton::begin
+	$('#newgroup').submit(function (event) {
+		event.preventDefault();
+		var groupname = $('#newgroupname').val();
+		var groupstorage = $('#newgroupstorage').val();
+		if ($.trim(groupname) == '') {
+			OC.dialogs.alert(
+				t('settings', 'A valid groupname must be provided'),
+				t('settings', 'Error creating group'));
+			return false;
+		}
+		if ($.trim(groupstorage) == '') {
+			OC.dialogs.alert(
+				t('settings', 'A valid groupstorage must be provided'),
+				t('settings', 'Error creating group'));
+			return false;
+		}
+		$('#newgroup').get(0).reset();
+		$.post(
+			OC.filePath('settings', 'ajax', 'creategroup.php'),
+			{
+				groupname: groupname,
+				groupstorage: groupstorage
+			},
+			function (result) {
+				if (result.status != 'success') {
+					OC.dialogs.alert(result.data.message,
+						t('settings', 'Error creating group'));
+				} else {
+					if (result.data.groupname) {
+						UserList.availableGroups = $.unique($.merge(UserList.availableGroups, result.data.groupname));
+					}
+					$('select[multiple]').each(function (index, element) {
+						if($(element).find('option[value="' + result.data.groupname + '"]').length === 0) {
+							$(element).append('<option value="' + escapeHTML(result.data.groupname) + '"> ' + escapeHTML(result.data.groupname) + '</option>');
+						}
+					})
+					OC.dialogs.alert(result.data.message,
+						t('settings', 'Success creating or modifying group'));
+				}
+			}
+		);
+	});
+	// Jawinton::end
+
 	// Handle undo notifications
 	OC.Notification.hide();
 	$('#notification').on('click', '.undo', function () {

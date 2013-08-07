@@ -473,6 +473,15 @@
 				<notnull>true</notnull>
 				<length>64</length>
 			</field>
+			<!-- Jawinton::begin -->
+			<field>
+				<name>size</name>
+				<type>integer</type>
+				<default></default>
+				<notnull>true</notnull>
+				<length>8</length>
+			</field>
+			<!-- Jawinton::end -->
 
 			<index>
 				<name>groups_pKey</name>

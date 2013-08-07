@@ -20,6 +20,7 @@ $users = array();
 $groups = array();
 
 $isadmin = OC_User::isAdminUser(OC_User::getUser());
+$issubadmin = OC_SubAdmin::isSubAdmin(OC_User::getUser());	// Jawinton
 $recoveryAdminEnabled = OC_App::isEnabled('files_encryption') &&
 					    OC_Appconfig::getValue( 'files_encryption', 'recoveryAdminEnabled' );
 
@@ -30,39 +31,62 @@ if($isadmin) {
 }else{
 	$accessiblegroups = OC_SubAdmin::getSubAdminsGroups(OC_User::getUser());
 	$accessibleusers = OC_Group::displayNamesInGroups($accessiblegroups, '', 30);
-	$subadmins = false;
+	// Jawinton, subadmin can manager their group admins
+	$subadmins = OC_SubAdmin::getSubAdminsGroups(OC_User::getUser());
+	// $subadmins = false;
 }
 
 // load preset quotas
-$quotaPreset=OC_Appconfig::getValue('files', 'quota_preset', '1 GB, 5 GB, 10 GB');
+$quotaPreset=OC_Appconfig::getValue('files', 'quota_preset', '1 GB, 5 GB, 10 GB, 50 GB, 100 GB');
 $quotaPreset=explode(',', $quotaPreset);
 foreach($quotaPreset as &$preset) {
 	$preset=trim($preset);
 }
-$quotaPreset=array_diff($quotaPreset, array('default', 'none'));
 
-$defaultQuota=OC_Appconfig::getValue('files', 'default_quota', 'none');
-$defaultQuotaIsUserDefined=array_search($defaultQuota, $quotaPreset)===false
-	&& array_search($defaultQuota, array('none', 'default'))===false;
+// Jawinton::begin
+// $quotaPreset=array_diff($quotaPreset, array('default', 'none'));
+$defaultQuota = '0 B';
+// $defaultQuota=OC_Appconfig::getValue('files', 'default_quota', 'none');
+// $defaultQuotaIsUserDefined=array_search($defaultQuota, $quotaPreset)===false;
+// 	&& array_search($defaultQuota, array('none', 'default'))===false;
+// Jawinton::end
+
+// Jawinton
+$groupAll = OC_Group::getGroupSize(OC_Group::getUserGroups(OC_User::getUser())[0]);
+if ($isadmin) $groupAll = OC_Helper::getStorageInfo()['total'];
+$groupAssigned = 0;
+$groupUsed = 0;
 
 // load users and quota
 foreach($accessibleusers as $uid => $displayName) {
-	$quota=OC_Preferences::getValue($uid, 'files', 'quota', 'default');
-	$isQuotaUserDefined=array_search($quota, $quotaPreset)===false
-		&& array_search($quota, array('none', 'default'))===false;
+	// if ($isadmin && !OC_SubAdmin::isSubAdmin($uid)) continue;	// Jawinton
+	// Jawinton::begin
+	$quota=OC_Preferences::getValue($uid, 'files', 'quota', $defaultQuota);
+	// $quota=OC_Preferences::getValue($uid, 'files', 'quota', 'default');
+	$isQuotaUserDefined=array_search($quota, $quotaPreset)===false;
+	// 	&& array_search($quota, array('none', 'default'))===false;
+	// Jawinton::end
 
 	$name = $displayName;
 	if ( $displayName != $uid ) {
 		$name = $name . ' ('.$uid.')';
 	} 
 	
+	$used = OC_User::getStorageInfo($uid);
 	$users[] = array(
 		"name" => $uid,
 		"displayName" => $displayName, 
 		"groups" => join( ", ", /*array_intersect(*/OC_Group::getUserGroups($uid)/*, OC_SubAdmin::getSubAdminsGroups(OC_User::getUser()))*/),
 		'quota'=>$quota,
-		'isQuotaUserDefined'=>$isQuotaUserDefined,
-		'subadmin'=>implode(', ', OC_SubAdmin::getSubAdminsGroups($uid)));
+		'isQuotaUserDefined'=>$isQuotaUserDefined,	// Jawinton
+		'subadmin'=>implode(', ', OC_SubAdmin::getSubAdminsGroups($uid)),
+		'used' => $used
+	);
+	// Jawinton
+	// if (isSubAdmin) {
+		$groupAssigned += OC_Helper::computerFileSize($quota);
+		$groupUsed += OC_Helper::computerFileSize($used);
+	// }
 }
 
 foreach( $accessiblegroups as $i ) {
@@ -74,10 +98,15 @@ $tmpl = new OC_Template( "settings", "users", "user" );
 $tmpl->assign( 'users', $users );
 $tmpl->assign( 'groups', $groups );
 $tmpl->assign( 'isadmin', (int) $isadmin);
+$tmpl->assign( 'issubadmin', (int) $issubadmin);	// Jawinton
+$tmpl->assign( 'group_all', OC_Helper::humanFileSize($groupAll));	// Jawinton
+$tmpl->assign( 'group_used', OC_Helper::humanFileSize($groupUsed));	// Jawinton
+$tmpl->assign( 'group_assigned', OC_Helper::humanFileSize($groupAssigned));	// Jawinton
+$tmpl->assign( 'group_unassigned', OC_Helper::humanFileSize($groupAll-$groupAssigned));	// Jawinton
 $tmpl->assign( 'subadmins', $subadmins);
 $tmpl->assign( 'numofgroups', count($accessiblegroups));
 $tmpl->assign( 'quota_preset', $quotaPreset);
-$tmpl->assign( 'default_quota', $defaultQuota);
-$tmpl->assign( 'defaultQuotaIsUserDefined', $defaultQuotaIsUserDefined);
+// $tmpl->assign( 'default_quota', $defaultQuota);
+// $tmpl->assign( 'defaultQuotaIsUserDefined', $defaultQuotaIsUserDefined);	// Jawinton
 $tmpl->assign( 'recoveryAdminEnabled', $recoveryAdminEnabled);
 $tmpl->printPage();

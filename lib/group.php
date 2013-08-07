@@ -66,7 +66,7 @@ class OC_Group {
 	 * Tries to create a new group. If the group name already exists, false will
 	 * be returned. Basic checking of Group name
 	 */
-	public static function createGroup( $gid ) {
+	public static function createGroup( $gid, $size ) {	// Jawinton, add $size param
 		// No empty group names!
 		if( !$gid ) {
 			return false;
@@ -85,7 +85,7 @@ class OC_Group {
 				if(!$backend->implementsActions(OC_GROUP_BACKEND_CREATE_GROUP))
 					continue;
 
-				$backend->createGroup($gid);
+				$backend->createGroup($gid, $size);	// Jawinton, add $size param
 				OC_Hook::emit( "OC_User", "post_createGroup", array( "gid" => $gid ));
 
 				return true;
@@ -128,6 +128,66 @@ class OC_Group {
 			return false;
 		}
 	}
+
+	// Jawinton::begin
+	/**
+	 * @brief get a group's size
+	 * @param string $gid gid of the group
+	 * @return bool
+	 *
+	 * get a group's size in group-table
+	 */
+	public static function getGroupSize( $gid ) {
+		// Prevent users from deleting group admin
+		if( $gid == "admin" ) {
+			return 'none';
+		}
+
+		foreach(self::$_usedBackends as $backend) {
+			if($backend->implementsActions(OC_GROUP_BACKEND_GET_GROUPSIZE)) {
+				return $backend->getGroupSize($gid);
+			} else {
+				return 0;
+			}
+		}
+	}
+	// Jawinton::end
+
+	// Jawinton::begin
+	/**
+	 * @brief modify a group's size
+	 * @param string $gid gid of the group to be modified
+	 * 		  int $size size of the group
+	 * @return bool
+	 *
+	 * modify a group's size in group-table
+	 */
+	public static function modifyGroupSize( $gid, $size ) {
+		// Prevent users from deleting group admin
+		if( $gid == "admin" ) {
+			return false;
+		}
+
+		$run = true;
+		OC_Hook::emit( "OC_Group", "pre_modifyGroupSize", array( "run" => &$run, "gid" => $gid ));
+
+		if($run) {
+			//delete the group from all backends
+			foreach(self::$_usedBackends as $backend) {
+				if(!$backend->implementsActions(OC_GROUP_BACKEND_MODIFY_GROUPSIZE))
+					continue;
+
+				$backend->modifyGroupSize($gid, $size);
+				OC_Hook::emit( "OC_User", "post_modifyGroupSize", array( "gid" => $gid ));
+
+				return true;
+			}
+			return false;
+		}else{
+			return false;
+		}
+	}
+	// Jawinton::end
 
 	/**
 	 * @brief is user in group?
@@ -295,7 +355,9 @@ class OC_Group {
 		$displayNames=array();
 		foreach(self::$_usedBackends as $backend) {
 			if($backend->implementsActions(OC_GROUP_BACKEND_GET_DISPLAYNAME)) {
-				$displayNames = array_merge($backend->displayNamesInGroup($gid, $search, $limit, $offset), $displayNames);
+				// Jawinton, change array_merge to '+' to prevese numberic key.
+				$displayNames = $backend->displayNamesInGroup($gid, $search, $limit, $offset) + $displayNames;
+				// $displayNames = array_merge($backend->displayNamesInGroup($gid, $search, $limit, $offset), $displayNames);
 			} else {
 				$users = $backend->usersInGroup($gid, $search, $limit, $offset);
 				$names = array_combine($users, $users);
@@ -322,7 +384,9 @@ class OC_Group {
 				$displayNames
 			);
 			if ($diff) {
-				$displayNames = array_merge($diff, $displayNames);
+				// Jawinton, change array_merge to '+' to prevese numberic key.
+				$displayNames = $diff + $displayNames;
+				// $displayNames = array_merge($diff, $displayNames);
 			}
 		}
 		return $displayNames;

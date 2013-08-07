@@ -21,6 +21,7 @@
 "undo" => "撤销",
 "Groups" => "组",
 "Group Admin" => "组管理员",
+"Group User" => "一般用戶",
 "Delete" => "删除",
 "__language_name__" => "简体中文",
 "Security Warning" => "安全警告",
@@ -59,6 +60,13 @@
 "Default Storage" => "默认存储",
 "Unlimited" => "无限",
 "Other" => "其它",
-"Storage" => "存储",
-"Default" => "默认"
+"Storage" => "全部空間",
+"Storage Used" => "已用空間",
+"Default" => "默认",
+"Login Name" => "用戶名",
+"Group Name" => "组名",
+"Create User" => "新建用户",
+"Create Group" => "新建组",
+"Group Storage" => "组空间大小",
+"Group storage infomation: all <strong>%s</strong>, assigned <strong><span id='group_assigned'>%s</span></strong>,  assigned <strong><span id='group_unassigned'>%s</span></strong>, used <strong>%s</strong>" => "组存储空间信息: 总大小 <strong>%s</strong>, 已分配空间大小 <strong><span id='group_assigned'>%s</span></strong>, 未分配空間大小<strong><span id='group_unassigned'>%s</span></strong>, 已使用空間大小 <strong>%s</strong>"
 );

@@ -103,6 +103,8 @@ $(document).ready(function() {
 
 	  if(typeof result[0] !== 'undefined' && result[0].status === 'success') {
 		var file = result[0];
+		$('#storage_used').html(result[0].used);	// Jawinton
+		$('#used').val(result[0].used);	// Jawinton
 	  } else {
 		data.textStatus = 'servererror';
 		data.errorThrown = t('files', result.data.message);

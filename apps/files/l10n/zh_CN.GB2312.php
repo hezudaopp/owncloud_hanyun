@@ -52,5 +52,6 @@
 "Upload too large" => "上传的文件太大了",
 "The files you are trying to upload exceed the maximum size for file uploads on this server." => "你正在试图上传的文件超过了此服务器支持的最大的文件大小.",
 "Files are being scanned, please wait." => "正在扫描文件,请稍候.",
-"Current scanning" => "正在扫描"
+"Current scanning" => "正在扫描",
+"You have used <strong><span id='storage_used'>%s</span></strong> of the available <strong>%s</strong>" => "你已使用 <span id='storage_used'>%s</span>，有效空间 <strong>%s</strong>"
 );

@@ -266,4 +266,23 @@ class OC_User_Database extends OC_User_Backend {
 		return true;
 	}
 
+	// Jawinton::begin
+	/**
+	 * @brief get  storage info of the user
+	 * @param $uid user ID of the user
+	 * @return storage info
+	 */
+	public function getStorageInfo($uid) {
+		if( $this->userExists($uid) ) {
+			$query = OC_DB::prepare( 'SELECT *PREFIX*filecache.size as used from *PREFIX*storages
+				LEFT JOIN *PREFIX*filecache ON *PREFIX*filecache.`storage` = *PREFIX*storages.numeric_id
+				WHERE *PREFIX*storages.id like ? AND *PREFIX*filecache.path="";' );
+			$result = $query->execute( array( '%'.$uid.'/' ))->fetchAll();
+			$used = 0;
+			if (!empty($result)) $used = trim($result[0]['used'], ' ');
+			return OC_Helper::humanFileSize($used);
+		}
+	}
+	// Jawinton::end
+
 }

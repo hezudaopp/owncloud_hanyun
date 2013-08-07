@@ -28,6 +28,7 @@
 					<!-- Send the requesttoken, this is needed for older IE versions
 						 because they don't send the CSRF token via HTTP header in this case -->
 					<input type="hidden" name="requesttoken" value="<?php p($_['requesttoken']) ?>" id="requesttoken">
+					<input type="hidden" name="used" id="used" value="<?php p(OCP\human_file_size($_['storageInfo']['used'])) ?>" id="used">	<!-- Jawinton -->
 					<input type="hidden" class="max_human_file_size"
 						   value="(max <?php p($_['uploadMaxHumanFilesize']); ?>)">
 					<input type="hidden" name="dir" value="<?php p($_['dir']) ?>" id="dir">
@@ -100,6 +101,12 @@
 	<tbody id="fileList">
 		<?php print_unescaped($_['fileList']); ?>
 	</tbody>
+	<tr>
+		<td colspan="10" style="text-align:right; padding-right:60px;">
+			<?php print_unescaped($l->t("You have used <strong><span id='storage_used'>%s</span></strong> of the available <strong>%s</strong>",
+			array(OCP\human_file_size($_['storageInfo']['used']), OCP\human_file_size($_['storageInfo']['total']))));?>
+		</td>
+	</tr>
 </table>
 <div id="editor"></div>
 <div id="uploadsize-message" title="<?php p($l->t('Upload too large'))?>">

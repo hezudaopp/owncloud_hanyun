@@ -336,13 +336,24 @@ var FileList={
 	},
 	do_delete:function(files){
 		if(files.substr){
-			files=[files];
+			files=[[files]];	// Jawinton
+		} else {
+			//	Jawinton::begin
+			tmp_files = [];
+			for (var i=0; i<files.length; i++) {
+				tmp_files[i] = [files[i]];
+			}
+			files = tmp_files;
+			//	Jawinton::end
 		}
 		for (var i=0; i<files.length; i++) {
-			var deleteAction = $('tr').filterAttr('data-file',files[i]).children("td.date").children(".action.delete");
-			var oldHTML = deleteAction[0].outerHTML;
+			var deleteAction = $('tr').filterAttr('data-file',files[i][0]).children("td.date").children(".action.delete");	// Jawinton
+			// var oldHTML = deleteAction[0].outerHTML;
+			var oldHTML = deleteAction.outerHTML;	//	Jawinton
 			var newHTML = '<img class="move2trash" data-action="Delete" title="'+t('files', 'perform delete operation')+'" src="'+ OC.imagePath('core', 'loading.gif') +'"></a>';
-			deleteAction[0].outerHTML = newHTML;
+			// deleteAction[0].outerHTML = newHTML;
+			deleteAction.outerHTML = newHTML;	//	Jawinton
+			files[i][1] = $('tr').filterAttr('data-file',files[i][0]).attr('data-size');	// Jawinton
 		}
 		// Finish any existing actions
 		if (FileList.lastAction) {
@@ -351,20 +362,24 @@ var FileList={
 
 		var fileNames = JSON.stringify(files);
 		$.post(OC.filePath('files', 'ajax', 'delete.php'),
-				{dir:$('#dir').val(),files:fileNames},
+				{dir:$('#dir').val(),files:fileNames,used:$('#storage_used').text()},	// Jawinton, add #storage_used
+				// {dir:$('#dir').val(),files:fileNames,used:$_['storageInfo']['used']},
 				function(result){
 					if (result.status == 'success') {
 						$.each(files,function(index,file){
-							var files = $('tr').filterAttr('data-file',file);
+							var files = $('tr').filterAttr('data-file',file[0]);	// Jawinton
 							files.remove();
 							files.find('input[type="checkbox"]').removeAttr('checked');
 							files.removeClass('selected');
 						});
 						procesSelection();
+						$('#storage_used').html(result.data.used); // Jawinton
+						$('#used').val(result.data.used);	// Jawinton
 					} else {
 						$.each(files,function(index,file) {
-							var deleteAction = $('tr').filterAttr('data-file',file).children("td.date").children(".move2trash");
-							deleteAction[0].outerHTML = oldHTML;
+							var deleteAction = $('tr').filterAttr('data-file',file[0]).children("td.date").children(".move2trash");	//Jawinton
+							// deleteAction[0].outerHTML = oldHTML;
+							deleteAction.outerHTML = oldHTML;	//	Jawinton
 						});
 					}
 				});
