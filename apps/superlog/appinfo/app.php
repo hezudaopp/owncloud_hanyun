@@ -18,8 +18,11 @@
 *  
 * 
 */
-OC::$CLASSPATH['OC_SuperLog'] = 'superlog/lib/log.php';
-OC::$CLASSPATH['OC_SuperLog_Hooks'] = 'superlog/lib/hooks.php';
+
+//	Jawinton::begin
+OC::$CLASSPATH['OCA\Superlog\Hooks'] = 'superlog/lib/hooks.php';
+OC::$CLASSPATH['OCA\Superlog\Log'] = 'superlog/lib/log.php';
+//	Jawinton::end
 
 OCP\Util::addStyle('superlog', 'superlog');
 OCP\Util::addScript('superlog', 'superlog');
@@ -28,20 +31,38 @@ OCP\App::registerAdmin('superlog','settings');
 OCP\App::registerPersonal('superlog', 'settings');
 
 /* HOOKS */
+//	Jawinton::begin
 // Users
-OC_HOOK::connect('OC_User', 'post_login', 'OC_SuperLog_Hooks', 'login');
-OC_HOOK::connect('OC_User', 'logout', 'OC_SuperLog_Hooks', 'logout');
+OC_HOOK::connect('OC_User', 'post_login', 'OCA\Superlog\Hooks', 'login');
+OC_HOOK::connect('OC_User', 'logout', 'OCA\Superlog\Hooks', 'logout');
 // Filesystem
-OC_HOOK::connect('OC_Filesystem', 'post_write', 'OC_SuperLog_Hooks', 'write');
-OC_HOOK::connect('OC_Filesystem', 'post_delete', 'OC_SuperLog_Hooks', 'delete');
-OC_HOOK::connect('OC_Filesystem', 'post_rename', 'OC_SuperLog_Hooks', 'rename');
-OC_HOOK::connect('OC_Filesystem', 'post_copy', 'OC_SuperLog_Hooks', 'copy');
+OCP\Util::connectHook(
+		OC\Files\Filesystem::CLASSNAME,
+		OC\Files\Filesystem::signal_post_write,
+		'OCA\Superlog\Hooks',
+		'write');
+OCP\Util::connectHook(
+		OC\Files\Filesystem::CLASSNAME,
+		OC\Files\Filesystem::signal_delete,
+		'OCA\Superlog\Hooks',
+		'delete');
+OCP\Util::connectHook(
+		OC\Files\Filesystem::CLASSNAME,
+		OC\Files\Filesystem::signal_post_rename,
+		'OCA\Superlog\Hooks',
+		'rename');
+OCP\Util::connectHook(
+		OC\Files\Filesystem::CLASSNAME,
+		OC\Files\Filesystem::signal_post_copy,
+		'OCA\Superlog\Hooks',
+		'copy');
 // Webdav
-OC_HOOK::connect('OC_DAV', 'initialize', 'OC_SuperLog_Hooks', 'dav');
+OC_HOOK::connect('OC_DAV', 'initialize', 'OCA\Superlog\Hooks', 'dav');
+// Jawinton::end
 
 
 // Cleanning settings
-\OCP\BackgroundJob::addRegularTask('OC_SuperLog', 'clean');
+\OCP\BackgroundJob::addRegularTask('OCA\Superlog\Log', 'clean');
 if (isset($_POST['superlog_lifetime']) && is_numeric($_POST['superlog_lifetime'])) {
    OC_Appconfig::setValue('superlog', 'superlog_lifetime', $_POST['superlog_lifetime']);
 }

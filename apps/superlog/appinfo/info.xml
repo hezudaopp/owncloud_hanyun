@@ -10,5 +10,8 @@
     <!-- Jawinton::begin -->
     <shipped>true</shipped>
 	<default_enable/>
+	<types>
+		<logging/><!-- set types so that this app will be loaded by files -->
+	</types>
     <!-- Jawinton::end -->    
 </info>

@@ -5,8 +5,16 @@
 *
 */
 
+//	Jawinton::begin
+namespace OCA\Superlog;
 
-class OC_SuperLog {
+use \OCP\User;
+use \OC\Files\Filesystem;
+use \OC_DB;
+//	Jawinton::end
+
+//	Jawinton, change class name from OC_SuperLog to Log
+class Log {
 	public function __construct(){		
 		self::clean();
 	}
@@ -15,7 +23,7 @@ class OC_SuperLog {
 		
 		
 		if(isset($_SERVER['PHP_AUTH_USER']) && !empty($_SERVER['PHP_AUTH_USER'])) $user = $_SERVER['PHP_AUTH_USER'];
-		else $user = OCP\User::getUser();
+		else $user = User::getUser();	//	Jawinton
 		
 		$folder = is_array($path)?dirname($path['path']):dirname($path);
 		$file = is_array($path)?basename($path['path']):basename($path);
@@ -27,7 +35,7 @@ class OC_SuperLog {
 		
 		if(!empty($file2)){
 			if($protocol=='web'){
-				$type = \OC\Files\Filesystem::filetype($folder2.'/'.$file2); 
+				$type = Filesystem::filetype($folder2.'/'.$file2); 	//Jawinton
 			}
 			elseif($protocol=='caldav'){
 				$type = $_SERVER['CONTENT_TYPE']; 
@@ -52,9 +60,9 @@ class OC_SuperLog {
 	}
 	
 	public static function clean(){
-		$lifetime = OC_Appconfig::getValue('superlog', 'superlog_lifetime','2');		
+		$lifetime = \OC_Appconfig::getValue('superlog', 'superlog_lifetime','2');		
 		$date = strtotime('-'.$lifetime.'days');
-		$query=OC_DB::prepare('DELETE FROM `*PREFIX*superlog` WHERE `date`< ? ');
+		$query=\OC_DB::prepare('DELETE FROM `*PREFIX*superlog` WHERE `date`< ? ');
 		$cleaner=$query->execute(array(date('Y-m-d H:i:s',$date)));
 		
 	}
@@ -78,10 +86,10 @@ class OC_SuperLog {
 		$date = date('Y-m-d H:i:s');
 		$datechk = substr($date,0,-3).'%';
 		
-		$query=OC_DB::prepare('SELECT `id` FROM `*PREFIX*superlog` WHERE `user`=? AND `date`LIKE ? AND `protocol`=? AND `type`=? AND `folder`=? AND`name`=? AND `folder2`=? AND `name2`=? AND `action`=?');
+		$query=\OC_DB::prepare('SELECT `id` FROM `*PREFIX*superlog` WHERE `user`=? AND `date`LIKE ? AND `protocol`=? AND `type`=? AND `folder`=? AND`name`=? AND `folder2`=? AND `name2`=? AND `action`=?');
 		$check=$query->execute(array($user,$datechk, $protocol, $type, $folder, $file, $folder2, $file2,$action));
-		if( (OC_DB::isError($check) || $check->fetchRow()==false) && !empty($folder) && !empty($file) ) {
-			$query=OC_DB::prepare('INSERT INTO `*PREFIX*superlog`(`user`, `date`,`protocol`,`type`, `folder`,`name`, `folder2`,`name2`,`action`,`vars`) VALUES(?,?,?,?,?,?,?,?,?,?)');
+		if( (\OC_DB::isError($check) || $check->fetchRow()==false) && !empty($folder) && !empty($file) ) {
+			$query=\OC_DB::prepare('INSERT INTO `*PREFIX*superlog`(`user`, `date`,`protocol`,`type`, `folder`,`name`, `folder2`,`name2`,`action`,`vars`) VALUES(?,?,?,?,?,?,?,?,?,?)');
 			$result=$query->execute(array($user,$date, $protocol, $type, $folder, $file, $folder2, $file2,$action, $vars));		
 			//return $result;
 		}
@@ -164,13 +172,13 @@ class OC_SuperLog {
 		$string.='ORDER BY `'.$params['order_by'].'`'.$params['order'].' LIMIT '.$params['start'].','.$params['limit'];
 		
 		// Execute the query
-		$query=OC_DB::prepare($string);
+		$query=\OC_DB::prepare($string);
 		$check=$query->execute($vars);
-		if(OC_DB::isError($check)) {
+		if(\OC_DB::isError($check)) {
 			return false;
 		}
 		
-		$l = new OC_L10N('superlog');		
+		$l = new \OC_L10N('superlog');		
 		
 		$logs=array();
 		while($log=$check->fetchRow()) {
@@ -181,9 +189,9 @@ class OC_SuperLog {
 			if($log['protocol']=='webdav'){
 				if($log['action']=='move' && $log['folder']==$log['folder2'] && $log['name']==$log['name2']){
 					$qs='SELECT `name` FROM `*PREFIX*superlog` WHERE `action`=\'PROPFIND\' AND `protocol`=\'webdav\' AND `folder`=? AND `date`>=?  AND `user`=?  AND `name`=`name2`LIMIT 0,1';
-					$qsr=OC_DB::prepare($qs);
+					$qsr=\OC_DB::prepare($qs);
 					$patch=$qsr->execute(array($log['folder'],$log['date'],$log['user']));
-					if(!OC_DB::isError($patch)) {
+					if(!\OC_DB::isError($patch)) {
 						$patch=$patch->fetchRow();
 						$log['name2']=$patch['name'];
 						$log['action']='rename';

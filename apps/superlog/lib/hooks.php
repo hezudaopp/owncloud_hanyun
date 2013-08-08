@@ -1,41 +1,45 @@
 <?php
 
-class OC_SuperLog_Hooks{
+//	Jawinton
+namespace OCA\Superlog;
+
+//	Jawinton, change class name from OC_SuperHooks to Hooks
+class Hooks{
 	
 	
 	
 	
 	// Webapp Files	
 	static public function write($path) {
-		OC_SuperLog::log($path,NULL,'write');
+		Log::log($path,NULL,'write');
 	}
 	static public function delete($path) {
-		OC_SuperLog::log($path,NULL,'delete');
+		Log::log($path,NULL,'delete');
 	}
 	static public function rename($paths) {
 		if(isset($_REQUEST['target'])){
-			OC_SuperLog::log($paths['oldpath'],$paths['newpath'],'move');
+			Log::log($paths['oldpath'],$paths['newpath'],'move');
 		}
 		else{
-			OC_SuperLog::log($paths['oldpath'],$paths['newpath'],'rename');
+			Log::log($paths['oldpath'],$paths['newpath'],'rename');
 		}		
 	}
 	static public function copy($paths) {
-		OC_SuperLog::log($paths['oldpath'],$paths['newpath'],'copy');
+		Log::log($paths['oldpath'],$paths['newpath'],'copy');
 	}
 	
 	
 	// Users
 	static public function login($vars) {
-		OC_SuperLog::log('/','/','login');
+		Log::log('/','/','login');
 	}
 	static public function logout($vars) {
-		OC_SuperLog::log('/','/','logout');
+		Log::log('/','/','logout');
 	}
 	
 	// Webdav
 	static public function dav($vars) {
-		OC_SuperLog::log('/','/','dav');
+		Log::log('/','/','dav');
 	}
 	
 	static public function all($vars) {
@@ -68,7 +72,7 @@ class OC_SuperLog_Hooks{
 			
 		} 
 		if(!in_array($action,array('head'))){
-			OC_SuperLog::log($path,NULL,$action,$protocol);
+			Log::log($path,NULL,$action,$protocol);
 		}		
 		
 	}
