@@ -51,7 +51,7 @@ class OC_Group_Database extends OC_Group_Backend {
 	 * Tries to create a new group. If the group name already exists, false will
 	 * be returned.
 	 */
-	public function createGroup( $gid, $size ) {	// Jawinton, add $size param
+	public function createGroup( $gid, $size = 0 ) {	// Jawinton, add $size param
 		// Check for existence
 		$stmt = OC_DB::prepare( "SELECT `gid` FROM `*PREFIX*groups` WHERE `gid` = ?" );
 		$result = $stmt->execute( array( $gid ));

@@ -566,6 +566,7 @@ class OC {
 		// register cache cleanup jobs
 		OC_BackgroundJob_RegularTask::register('OC_Cache_FileGlobal', 'gc');
 		OC_Hook::connect('OC_User', 'post_login', 'OC_Cache_File', 'loginListener');
+		// OC_HOOK::connect('OC_User', 'post_login', 'OC\Superlog\OC_SuperLog_Hooks', 'login');	//	Jawinton
 	}
 
 	/**
@@ -575,6 +576,13 @@ class OC {
 		// Check for blacklisted files
 		OC_Hook::connect('OC_Filesystem', 'write', 'OC_Filesystem', 'isBlacklisted');
 		OC_Hook::connect('OC_Filesystem', 'rename', 'OC_Filesystem', 'isBlacklisted');
+
+		// Jawinton::begin
+		// OC_HOOK::connect('OC_Filesystem', 'post_write', 'OC\Superlog\OC_SuperLog_Hooks', 'write');
+		// OC_HOOK::connect('OC_Filesystem', 'post_delete', 'OC\Superlog\OC_SuperLog_Hooks', 'delete');
+		// OC_HOOK::connect('OC_Filesystem', 'post_rename', 'OC_SuperLog_Hooks', 'rename');
+		// OC_HOOK::connect('OC_Filesystem', 'post_copy', 'OC\Superlog\OC_SuperLog_Hooks', 'copy');
+		// Jawinton::end
 	}
 
 	/**

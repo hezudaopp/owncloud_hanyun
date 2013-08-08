@@ -66,7 +66,7 @@ class OC_Group {
 	 * Tries to create a new group. If the group name already exists, false will
 	 * be returned. Basic checking of Group name
 	 */
-	public static function createGroup( $gid, $size ) {	// Jawinton, add $size param
+	public static function createGroup( $gid, $size = 0 ) {	// Jawinton, add $size param
 		// No empty group names!
 		if( !$gid ) {
 			return false;

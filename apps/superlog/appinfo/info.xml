@@ -7,4 +7,8 @@
 	<licence>AGPL</licence>
 	<author>Bastien Ho</author>
 	<require>5</require>
+    <!-- Jawinton::begin -->
+    <shipped>true</shipped>
+	<default_enable/>
+    <!-- Jawinton::end -->    
 </info>
