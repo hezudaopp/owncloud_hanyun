@@ -17,7 +17,7 @@
 				<span class='name'><?php p($l->t( 'Name' )); ?></span>
 				<span class='selectedActions'>
 						<a href="" class="undelete">
-							<img class="svg" alt="<?php p($l->t( 'Restore' )); ?>"
+							<img class="svg" alt="<?php p($l->t('Restore')); ?>"
 								 src="<?php print_unescaped(OCP\image_path("core", "actions/undelete.png")); ?>" />
 							<?php p($l->t('Restore'))?>
 						</a>

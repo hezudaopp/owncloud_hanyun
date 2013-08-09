@@ -6,5 +6,6 @@
 "1 file" => "1 個檔案",
 "{count} files" => "{count} 個檔案",
 "Delete" => "刪除",
-"Deleted Files" => "已刪除的檔案"
+"Deleted Files" => "已刪除的檔案",
+"Restore" => "還原"
 );

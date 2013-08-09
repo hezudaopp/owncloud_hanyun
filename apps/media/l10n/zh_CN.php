@@ -13,5 +13,7 @@
 "Rescan Collection" => "重新扫描收藏",
 "Artist" => "艺术家",
 "Album" => "专辑",
-"Title" => "标题"
+"Title" => "标题",
+"Media" => "媒体",
+"Ampache address:" => "Ampache 地址："
 );

@@ -205,7 +205,7 @@ $_['subadmingroups'] = array_flip($items);
 </table>
 <!-- Jawinton::begin -->
 <div style="float:right; margin-top:42px;margin-right:100px;">
-	<span><?php print_unescaped($l->t("Group storage infomation: all <strong>%s</strong>, assigned <strong><span id='group_assigned'>%s</span></strong>,  unassigned <strong><span id='group_unassigned'>%s</span></strong>, used <strong>%s</strong>", 
+	<span><?php print_unescaped($l->t("Group storage infomation: all <strong>%s</strong>, assigned <strong><span id='group_assigned'>%s</span></strong>,  assigned <strong><span id='group_unassigned'>%s</span></strong>, used <strong>%s</strong>", 
 	array($_["group_all"], $_["group_assigned"], $_["group_unassigned"], $_["group_used"])));?></span>
 </div>
 <!-- Jawinton::end -->

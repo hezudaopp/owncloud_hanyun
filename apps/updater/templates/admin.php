@@ -13,7 +13,7 @@
 ?>
 
 <fieldset class="personalblock">
-	<strong>Updater</strong>
+	<strong><?php p($l->t('Updater')) ?></strong>
 	<br />
 	<?php print_unescaped(OC_Updater::ShowUpdatingHint()) ?>
 	<br />

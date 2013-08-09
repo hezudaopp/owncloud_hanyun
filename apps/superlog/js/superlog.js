@@ -49,6 +49,9 @@ $(document).ready(function(){
 			$('#superlog_more').fadeIn(500);
 			$('#superlogs_results tr').remove();
 			$('#superlog_start').val(0);
+			//	Jawinton::begin
+			superlogs.get();
+			//	Jawinton::end
 		});
 		$('#superlog_more').click(function(){
 			superlogs.get();
