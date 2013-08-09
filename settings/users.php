@@ -52,8 +52,10 @@ $defaultQuota = '0 B';
 // Jawinton::end
 
 // Jawinton
-$groupAll = OC_Group::getGroupSize(OC_Group::getUserGroups(OC_User::getUser())[0]);
-if ($isadmin) $groupAll = OC_Helper::getStorageInfo()['total'];
+$userGroups = OC_Group::getUserGroups(OC_User::getUser());
+$groupAll = OC_Group::getGroupSize($userGroups[0]);
+$storageInfo = OC_Helper::getStorageInfo();
+if ($isadmin) $groupAll = $storageInfo['total'];
 $groupAssigned = 0;
 $groupUsed = 0;
 
