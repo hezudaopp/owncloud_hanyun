@@ -53,7 +53,7 @@
 "Create User" => "新建用户",
 "Create Group" => "新建组",
 "Group Storage" => "组空间大小",
-"Group storage infomation: all <strong>%s</strong>, assigned <strong><span id='group_assigned'>%s</span></strong>,  assigned <strong><span id='group_unassigned'>%s</span></strong>, used <strong>%s</strong>" => "组存储空间信息: 总大小 <strong>%s</strong>, 已分配空间大小 <strong><span id='group_assigned'>%s</span></strong>, 未分配空間大小<strong><span id='group_unassigned'>%s</span></strong>, 已使用空間大小 <strong>%s</strong>",
+"Group storage infomation: all <strong>%s</strong>, assigned <strong><span id='group_assigned'>%s</span></strong>,  unassigned <strong><span id='group_unassigned'>%s</span></strong>, used <strong>%s</strong>" => "组存储空间信息: 总大小 <strong>%s</strong>, 已分配空间大小 <strong><span id='group_assigned'>%s</span></strong>, 未分配空間大小<strong><span id='group_unassigned'>%s</span></strong>, 已使用空間大小 <strong>%s</strong>",
 "Show First Run Wizard again" => "再次显示首次运行向导",
 "Display Name" => "显示名称",
 "Change display name" => "修改显示名称",

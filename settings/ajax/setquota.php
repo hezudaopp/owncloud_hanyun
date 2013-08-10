@@ -20,7 +20,8 @@ if(($username == '' && !OC_User::isAdminUser(OC_User::getUser()))
 
 //make sure the quota is in the expected format
 // Jawinton::begin
-$groupAll = OC_Group::getGroupSize(OC_Group::getUserGroups($username)[0]);
+$userGroups = OC_Group::getUserGroups($username);
+$groupAll = OC_Group::getGroupSize($userGroups[0]);
 $quota=$_POST["quota"];
 $preQuota = $_POST["preQuota"];
 $groupUnassigned = $_POST["groupUnassigned"];
