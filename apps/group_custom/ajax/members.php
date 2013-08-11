@@ -21,7 +21,8 @@
  *
  */
 
-OCP\JSON::checkLoggedIn();
+// OCP\JSON::checkLoggedIn();
+OCP\JSON::checkAdminUser(); // Jawinton
 OCP\JSON::checkAppEnabled('group_custom');
 OCP\JSON::callCheck();
 
