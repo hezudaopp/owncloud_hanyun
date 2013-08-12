@@ -151,6 +151,19 @@ class OC_Group {
 			}
 		}
 	}
+
+	public static function getGroupAssigned( $gid ) {
+		foreach(self::$_usedBackends as $backend) {
+			if($gid == "admin" && $backend->implementsActions(OC_GROUP_BACKEND_GET_ALLASSIGNED)) {
+				return $backend->getAllAssigned();
+			} else if ($backend->implementsActions(OC_GROUP_BACKEND_GET_GROUPASSIGNED)){
+				return $backend->getGroupAssigned($gid);
+			} else {
+				return 0;
+			}
+		}
+	}
+
 	// Jawinton::end
 
 	// Jawinton::begin

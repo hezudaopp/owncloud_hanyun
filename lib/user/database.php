@@ -277,7 +277,7 @@ class OC_User_Database extends OC_User_Backend {
 			$query = OC_DB::prepare( 'SELECT *PREFIX*filecache.size as used from *PREFIX*storages
 				LEFT JOIN *PREFIX*filecache ON *PREFIX*filecache.`storage` = *PREFIX*storages.numeric_id
 				WHERE *PREFIX*storages.id like ? AND (*PREFIX*filecache.path="" OR *PREFIX*filecache.path IS NULL);' );
-			$result = $query->execute( array( '%'.$uid.'/' ))->fetchAll();
+			$result = $query->execute( array( '%/'.$uid.'/' ))->fetchAll();
 			$used = 0;
 			if (!empty($result)) $used = trim($result[0]['used'], ' ');
 			return OC_Helper::humanFileSize($used);

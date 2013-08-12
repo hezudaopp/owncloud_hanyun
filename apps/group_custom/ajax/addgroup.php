@@ -43,6 +43,17 @@ if ( isset($gid) ) {
 
 if ( isset($_POST['group']) && isset($_POST['size']) ) {	//	Jawinton, add size
 
+    // Group size less than unallocated size
+    $storageInfo = OC_Helper::getStorageInfo();
+    $groupAll = $storageInfo['total'];
+    $groupAssigned = OC_Group::getGroupAssigned('admin');
+    $groupUnassigned = $groupAll - $groupAssigned;
+    if ($size > $groupUnassigned) {
+        OC_JSON::error(array("data" => array('title'=> $l->t('New Group') , 'message' => $l->t('No enough space') )));
+        exit();
+    }
+
+
     // $result = OC_Group_Custom_Local::createGroup( $_POST['group'], $_POST['size'] ) ;	//	Jawinton, add size param
     $result = OC_Group::createGroup( $gid, $size );	//	Jawinton
 

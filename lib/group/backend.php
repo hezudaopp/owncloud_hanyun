@@ -37,6 +37,8 @@ define('OC_GROUP_BACKEND_GET_DISPLAYNAME',   0x00010000);
 define('OC_GROUP_BACKEND_MODIFY_GROUPSIZE',  0x00100000);	// Jawinton
 define('OC_GROUP_BACKEND_GET_GROUPSIZE',  	 0x01000000);	// Jawinton
 define('OC_GROUP_BACKEND_GET_GROUPS',  	 	 0x10000000);	// Jawinton
+define('OC_GROUP_BACKEND_GET_ALLASSIGNED',   0x10000001);	// Jawinton
+define('OC_GROUP_BACKEND_GET_GROUPASSIGNED', 0x10000010);	// Jawinton
 
 /**
  * Abstract base class for user management
@@ -50,7 +52,9 @@ abstract class OC_Group_Backend implements OC_Group_Interface {
 		OC_GROUP_BACKEND_GET_DISPLAYNAME => 'displayNamesInGroup',
 		OC_GROUP_BACKEND_GET_GROUPSIZE => 'getGroupSize',	// Jawinton
 		OC_GROUP_BACKEND_MODIFY_GROUPSIZE => 'modifyGroupSize',	//Jawinton
-		OC_GROUP_BACKEND_GET_GROUPS => 'getGroups'	// Jawinton
+		OC_GROUP_BACKEND_GET_GROUPS => 'getGroups',	// Jawinton
+		OC_GROUP_BACKEND_GET_ALLASSIGNED => 'getAllAssigned', // Jawinton
+		OC_GROUP_BACKEND_GET_GROUPASSIGNED => 'getGroupAssigned' // Jawinton
 	);
 
 	/**

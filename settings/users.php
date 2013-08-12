@@ -56,7 +56,7 @@ $userGroups = OC_Group::getUserGroups(OC_User::getUser());
 $groupAll = OC_Group::getGroupSize($userGroups[0]);
 $storageInfo = OC_Helper::getStorageInfo();
 if ($isadmin) $groupAll = $storageInfo['total'];
-$groupAssigned = 0;
+$groupAssigned = OC_Group::getGroupAssigned($userGroups[0]);
 $groupUsed = 0;
 
 // load users and quota
@@ -86,7 +86,6 @@ foreach($accessibleusers as $uid => $displayName) {
 	);
 	// Jawinton
 	// if (isSubAdmin) {
-		$groupAssigned += OC_Helper::computerFileSize($quota);
 		$groupUsed += OC_Helper::computerFileSize($used);
 	// }
 }

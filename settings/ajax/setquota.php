@@ -23,9 +23,10 @@ if(($username == '' && !OC_User::isAdminUser(OC_User::getUser()))
 $userGroups = OC_Group::getUserGroups($username);
 $groupAll = OC_Group::getGroupSize($userGroups[0]);
 $quota=$_POST["quota"];
-$preQuota = $_POST["preQuota"];
-$groupUnassigned = $_POST["groupUnassigned"];
-$groupAssigned = $_POST["groupAssigned"];
+// $preQuota = $_POST["preQuota"];
+$preQuota = OC_Preferences::getValue($username, 'files', 'quota', $defaultQuota);
+$groupAssigned = OC_Group::getGroupAssigned($userGroups[0]);
+$groupUnassigned = $groupAll - $groupAssigned;
 if($quota!='none' and $quota!='default') {
 	$quota = OC_Helper::computerFileSize($quota);
 }
@@ -60,5 +61,5 @@ if($username) {
 	}
 	OC_Appconfig::setValue('files', 'default_quota', $quota);
 }
-OC_JSON::success(array("data" => array( "username" => $username , 'quota' => $quota, 'groupAssigned' => $groupAssigned, 'groupUnassigned' => $groupUnassigned)));
+OC_JSON::success(array("data" => array( "username" => $username , 'preQuota' => $preQuota, 'quota' => $quota, 'groupAssigned' => $groupAssigned, 'groupUnassigned' => $groupUnassigned)));
 

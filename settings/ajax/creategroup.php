@@ -16,13 +16,24 @@ if($groupstorage!='none' and $groupstorage!='default') {
 // Does the group exist?
 // Jawinton::begin if the group exists, we modify the group storage size
 if( in_array( $groupname, OC_Group::getGroups())) {
-	$orignalGroupStorage = OC_Group::getGroupSize($groupname);
-	if (OC_Group::modifyGroupSize($groupname, $groupstorage)) {
-		OC_JSON::success(array("data" => array( "groupname" => $groupname, 
-			"message" => "Group <strong>".$groupname."</strong>'s storage size has been changed from <strong>".OC_Helper::humanFileSize($orignalGroupStorage)."</strong> to <strong>".OC_Helper::humanFileSize($groupstorage)."</strong> successfully." )));
-	} else { 
-		OC_JSON::error(array("data" => array( "message" => "Unable to modify group size" )));
-	}
+	// $orignalGroupStorage = OC_Group::getGroupSize($groupname);
+	// if (OC_Group::modifyGroupSize($groupname, $groupstorage)) {
+	// 	OC_JSON::success(array("data" => array( "groupname" => $groupname, 
+	// 		"message" => "Group <strong>".$groupname."</strong>'s storage size has been changed from <strong>".OC_Helper::humanFileSize($orignalGroupStorage)."</strong> to <strong>".OC_Helper::humanFileSize($groupstorage)."</strong> successfully." )));
+	// } else { 
+	// 	OC_JSON::error(array("data" => array( "message" => "Unable to modify group size" )));
+	// }
+	OC_JSON::error(array("data" => array( "message" => "Group name already exists" )));
+	exit();
+}
+
+// Group size less than unallocated size
+$storageInfo = OC_Helper::getStorageInfo();
+$groupAll = $storageInfo['total'];
+$groupAssigned = OC_Group::getGroupAssigned('admin');
+$groupUnassigned = $groupAll - $groupAssigned;
+if ($groupstorage > $groupUnassigned) {
+	OC_JSON::error(array("data" => array( "message" => "No enough space" )));
 	exit();
 }
 // Jawinton::end

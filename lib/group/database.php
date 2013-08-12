@@ -89,6 +89,30 @@ class OC_Group_Database extends OC_Group_Backend {
 			return false;
 		}
 	}
+
+	public function getAllAssigned() {
+		$stmt = OC_DB::prepare( "SELECT sum(`size`) as allAssigned FROM `*PREFIX*groups`" );
+		$result = $stmt->execute();
+
+		if ( $row = $result->fetchRow() ) {
+			return $row['allAssigned'];
+		}
+		else{
+			return false;
+		}
+	}
+
+	public function getGroupAssigned($gid) {
+		$stmt = OC_DB::prepare( "SELECT `configvalue` as groupAssigned FROM `*PREFIX*group_user`
+		LEFT JOIN `*PREFIX*preferences` ON `*PREFIX*group_user`.`uid` = `*PREFIX*preferences`.`userid` 
+		WHERE `gid` = ? and `configkey` = 'quota'" );
+		$result = $stmt->execute( array( $gid ));
+		$ret = 0;
+		while ( $row = $result->fetchRow() ) {
+			$ret += OC_Helper::computerFileSize($row['groupAssigned']);
+		}
+		return $ret;
+	}
 	// Jawinton::end
 
 	// Jawinton::begin

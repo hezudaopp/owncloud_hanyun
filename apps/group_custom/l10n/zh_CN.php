@@ -13,5 +13,6 @@
 "insert the new group" => "添加新组" ,
 "Choose another name" => "请另选组名称",
 "Size" => "组空间大小",
-"Modify Group Size" => "修改组空间大小"
+"Modify Group Size" => "修改组空间大小",
+"No enough space" => "剩余空间不足"
 );

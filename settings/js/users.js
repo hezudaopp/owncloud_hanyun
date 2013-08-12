@@ -9,18 +9,14 @@ function setQuota (obj, uid, quota, preQuota, ready) {
 		OC.filePath('settings', 'ajax', 'setquota.php'),
 		{
 			username: uid, 
-			quota: quota,
-			preQuota: preQuota,
-			groupUnassigned: $('#group_unassigned').text(),
-			groupAssigned: $('#group_assigned').text()
+			quota: quota
 		},
 		function (result) {
 			// Jawinton::begin
 			if (result.status != 'success') {
 					OC.dialogs.alert(result.data.message,
 						t('settings', 'Error setting quota'));
-					if (preQuota)
-						obj.val(result.data.preQuota);
+					obj.val(result.data.preQuota);
 			} else {
 				if (ready) {
 					ready(result.data.quota);
