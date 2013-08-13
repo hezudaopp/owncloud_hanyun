@@ -23,7 +23,7 @@ class App {
 		\OC::$CLASSPATH['OCA\Updater\Updater'] = self::APP_ID . '/lib/updater.php';
 		\OC::$CLASSPATH['OCA\Updater\Helper'] = self::APP_ID . '/lib/helper.php';
 		//Allow config page
-		\OC_APP::registerAdmin(self::APP_ID, 'admin');
+		// \OC_APP::registerAdmin(self::APP_ID, 'admin');	// Jawinton
 	}
 
 	/**

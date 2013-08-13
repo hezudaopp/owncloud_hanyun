@@ -9,9 +9,9 @@ RequestHeader set XAuthorization %{XAUTHORIZATION}e env=XAUTHORIZATION
 ErrorDocument 403 /owncloud_hanyun/core/templates/403.php
 ErrorDocument 404 /owncloud_hanyun/core/templates/404.php
 <IfModule mod_php5.c>
-php_value upload_max_filesize 512M
-php_value post_max_size 512M
-php_value memory_limit 512M
+php_value upload_max_filesize 10G
+php_value post_max_size 10G
+php_value memory_limit 4G
 <IfModule env_module>
   SetEnv htaccessWorking true
 </IfModule>

@@ -11,21 +11,21 @@ class Hooks{
 	
 	// Webapp Files	
 	static public function write($path) {
-		Log::log($path,NULL,'write');
+		Log::log($path,NULL,'write',Hooks::getProtocol());
 	}
 	static public function delete($path) {
-		Log::log($path,NULL,'delete');
+		Log::log($path,NULL,'delete',Hooks::getProtocol());
 	}
 	static public function rename($paths) {
 		if(isset($_REQUEST['target'])){
-			Log::log($paths['oldpath'],$paths['newpath'],'move');
+			Log::log($paths['oldpath'],$paths['newpath'],'move',Hooks::getProtocol());
 		}
 		else{
-			Log::log($paths['oldpath'],$paths['newpath'],'rename');
+			Log::log($paths['oldpath'],$paths['newpath'],'rename',Hooks::getProtocol());
 		}		
 	}
 	static public function copy($paths) {
-		Log::log($paths['oldpath'],$paths['newpath'],'copy');
+		Log::log($paths['oldpath'],$paths['newpath'],'copy',Hooks::getProtocol());
 	}
 	
 	
@@ -76,5 +76,15 @@ class Hooks{
 		}		
 		
 	}
+
+	// Jawinton::begin
+	static public function getProtocol() {
+		if (empty($_POST) && empty($_GET)) {
+			return 'webdav';
+		} else {
+			return 'web';
+		}
+	}
+	// Jawinton::end
 }
 

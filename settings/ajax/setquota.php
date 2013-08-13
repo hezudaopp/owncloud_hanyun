@@ -23,6 +23,7 @@ if(($username == '' && !OC_User::isAdminUser(OC_User::getUser()))
 $userGroups = OC_Group::getUserGroups($username);
 $groupAll = OC_Group::getGroupSize($userGroups[0]);
 $quota=$_POST["quota"];
+$defaultQuota = '0 B';
 // $preQuota = $_POST["preQuota"];
 $preQuota = OC_Preferences::getValue($username, 'files', 'quota', $defaultQuota);
 $groupAssigned = OC_Group::getGroupAssigned($userGroups[0]);

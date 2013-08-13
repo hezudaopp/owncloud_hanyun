@@ -34,16 +34,12 @@ class Log {
 		$type='unknown';
 		
 		if(!empty($file2)){
-			if($protocol=='web'){
+			if($protocol=='web' || $protocol == 'webdav'){	// Jawinton
 				$type = Filesystem::filetype($folder2.'/'.$file2); 	//Jawinton
 			}
-			elseif($protocol=='caldav'){
+			elseif($protocol=='caldav' || $protocol=='carddav'){		//	Jawinton
 				$type = $_SERVER['CONTENT_TYPE']; 
-			}
-			elseif($protocol=='carddav'){
-				$type = $_SERVER['CONTENT_TYPE']; 
-			}
-			else{
+			} else{
 				$CONFIG_DATADIRECTORY = OC_Config::getValue( "datadirectory", OC::$SERVERROOT."/data" );
 				if(is_dir($CONFIG_DATADIRECTORY.'/'.$user.'/files')){
 					$type='unknown';
