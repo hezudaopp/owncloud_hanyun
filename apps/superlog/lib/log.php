@@ -139,8 +139,23 @@ class Log {
 			$vars[]='%'.$params['search'].'%';
 		}
 		if(!empty($params['user'])){
-			$string.= 'AND `user`=? ';
-			$vars[]=$params['user'];
+			// Jawinton::begin
+			if(\OC_SubAdmin::isSubAdmin($params['user'])) {
+				$string.= 'AND ( `user`=? ';
+				$vars[]=$params['user'];
+				$userGroups = \OC_Group::getUserGroups($params['user']);
+				$groupUsers = \OC_Group::usersInGroup($userGroups[0]);
+				foreach ($groupUsers as $key => $user) {
+					if ($user===$params['user']) continue;
+					$string.= 'OR `user`=? ';
+					$vars[]=$user;
+				}
+				$string.=' )';
+			} else {
+				$string.= 'AND `user`=? ';
+				$vars[]=$params['user'];
+			}
+			// Jawinton::end
 		}
 		if(!empty($params['protocol'])){
 			$string.= 'AND `protocol`=? ';
