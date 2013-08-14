@@ -30,6 +30,13 @@ $l = OC_L10N::get('group_custom');
 
 if ( isset($_POST['group']) ) {
 
+	// Jawinton::begin
+	if ($_POST['group'] == 'admin') {
+		OCP\JSON::error(array('data' => array('title'=> $l->t('Delete Group') , 'message' => 'error' ))) ;
+		exit();
+	}
+	// Jawinton::end
+
     $result = OC_Group::deleteGroup( $_POST['group'] ) ;	// Jawtion
 
     if ($result) {

@@ -54,5 +54,6 @@
 "Files are being scanned, please wait." => "正在扫描文件,请稍候.",
 "Current scanning" => "正在扫描",
 "You have used <strong><span id='storage_used'>%s</span></strong> of the available <strong>%s</strong>" => "你已使用 <span id='storage_used'>%s</span>，有效空间 <strong>%s</strong>",
-"Deleted files" => "回收站"
+"Deleted files" => "回收站",
+"Please use client to upload files which are larger than 2G" => "如果要上传超过2G的文件，请使用客户端"
 );

@@ -15,7 +15,7 @@
 				</ul>
 			</div>
 			<div id="upload" class="button"
-				 title="<?php p($l->t('Upload') . ' max. '.$_['uploadMaxHumanFilesize']) ?>">
+				 title="<?php p($l->t('Upload') . ' max. '.$_['uploadMaxHumanFilesize']. '. ' .$l->t('Please use client to upload files which are larger than 2G')) ?>">
 				<form data-upload-id='1'
 					  id="data-upload-form"
 					  class="file_upload_form"

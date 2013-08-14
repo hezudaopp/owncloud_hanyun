@@ -30,6 +30,13 @@ $l = OC_L10N::get('group_custom');
 
 if ( isset($_POST['member']) and isset($_POST['group']) ) {
 
+	// Jawinton::begin
+	if ($_POST['member'] == OC_User::getUser()) {
+		OCP\JSON::error(array('data' => array('title'=> $l->t('Delete Member') , 'message' => 'error' ))) ;
+		exit();
+	}
+	// Jawinton::end
+
     $result = OC_Group::removeFromGroup( $_POST['member'] , $_POST['group'] ) ;	// Jawinton
 
     if ($result) {
