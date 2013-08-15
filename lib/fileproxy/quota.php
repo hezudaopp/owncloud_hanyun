@@ -42,6 +42,13 @@ class OC_FileProxy_Quota extends OC_FileProxy{
 		if($userQuota=='default') {
 			$userQuota=OC_AppConfig::getValue('files', 'default_quota', 'none');
 		}
+
+		// Jawinton::begin
+		if (OC_User::isAdminUser($user)) {
+			$userQuota = 'none';
+		}
+		// Jawinton::end
+
 		if($userQuota=='none') {
 			$this->userQuota[$user]=-1;
 		}else{
