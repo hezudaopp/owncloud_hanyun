@@ -182,6 +182,48 @@ $(document).ready(function() {
 
     });
 
+    // Jawinton::begin
+    $('.group-actions > .lock.group').live('click', function( event ) {   
+        
+        var container = $(this).parents('li').first();
+
+        var group     = container.data('group');
+        event.stopPropagation();
+
+        $.post(OC.filePath('group_custom', 'ajax', 'lockgroup.php'), { group : group } , function ( jsondata ){
+            if(jsondata.status == 'success' ) {
+                $('#leftcontent').html(jsondata.data.page)
+            }else{
+                OC.dialogs.alert( jsondata.data.message , jsondata.data.title ) ;
+            }           
+        });
+
+        $('.tipsy').remove();
+
+    });
+
+    $('.group-actions > .unlock.group').live('click', function( event ) {   
+        
+        var container = $(this).parents('li').first();
+
+        var group     = container.data('group');
+        event.stopPropagation();
+
+        $.post(OC.filePath('group_custom', 'ajax', 'unlockgroup.php'), { group : group } , function ( jsondata ){
+            if(jsondata.status == 'success' ) {
+                $('#leftcontent').html(jsondata.data.page)
+            }else{
+                OC.dialogs.alert( jsondata.data.message , jsondata.data.title ) ;
+            }           
+        });
+
+        $('.tipsy').remove();
+
+    });
+
+
+    // Jawinton::end
+
     $('a.action').tipsy({
         gravity : 's',
         fade : true,

@@ -1,12 +1,15 @@
 <?php
 
+OC::$CLASSPATH['OC_GroupPreferences']='apps/group_custom/lib/grouppreferences.php';
+OC::$CLASSPATH['OC_Group_Custom_Hooks'] = 'apps/group_custom/lib/hooks.php';
+OCP\Util::connectHook('OC_User', 'pre_login', 'OC_Group_Custom_Hooks', 'pre_login');
+
 if (OC_User::isAdminUser(OC_User::getUser())) {	// Jawinton
-	OC::$CLASSPATH['OC_Group_Custom']='apps/group_custom/lib/group_custom.php';
-	OC::$CLASSPATH['OC_Group_Custom_Local']='apps/group_custom/lib/group_custom_local.php';
-	OC::$CLASSPATH['OC_Group_Custom_Hooks'] = 'apps/group_custom/lib/hooks.php';
 
 	// Jawinton::begin
-	// OCP\Util::connectHook('OC_User', 'post_deleteUser', 'OC_Group_Custom_Hooks', 'post_deleteUser');
+	// OC::$CLASSPATH['OC_Group_Custom']='apps/group_custom/lib/group_custom.php';
+	// OC::$CLASSPATH['OC_Group_Custom_Local']='apps/group_custom/lib/group_custom_local.php';
+
 	// OC_Group::useBackend( new OC_Group_Custom() );
 	// Jawinton::end
 

@@ -144,6 +144,9 @@ $_['subadmingroups'] = array_flip($items);
 					<a href="#" class="action delete" original-title="<?php p($l->t('Delete'))?>">
 						<img src="<?php print_unescaped(image_path('core', 'actions/delete.svg')) ?>" class="svg" />
 					</a>
+					<a href="#" class="action delete" original-title="<?php p($l->t('Delete'))?>">
+						<img src="<?php print_unescaped(image_path('core', 'actions/delete.svg')) ?>" class="svg" />
+					</a>
 				<?php endif;?>
 			</td>
 		</tr>
