@@ -7,5 +7,8 @@
 	<licence>AGPL (Icon taken from picol.org , Creative Commons-License BY-SA. )</licence>
 	<author>Jorge Rafael Garcia Ramos, Modified by Jawinton</author> <!-- Jawinton, add modified by -->
 	<require>5.0.9</require> <!-- Jawinton, from 4.9.7 to 5.0.9 -->
+	<types>
+		<authentication/>
+	</types>
 	<default_enable/> <!-- Jawinton -->
 </info>

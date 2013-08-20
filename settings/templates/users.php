@@ -72,6 +72,9 @@ $_['subadmingroups'] = array_flip($items);
 			<?php endif;?>
 			<th id="headerQuota"><?php p($l->t('Storage')); ?></th>
 			<th id="headerQuota"><?php p($l->t('Storage Used')); ?></th>
+			<?php if(! (bool) $_['isadmin']): ?>
+				<th id="headerStatus">&nbsp;</th>
+			<?php endif; ?>
 			<th id="headerRemove">&nbsp;</th>
 		</tr>
 	</thead>
@@ -139,11 +142,26 @@ $_['subadmingroups'] = array_flip($items);
 			<td class="used" style="padding-left:20px;">
 				<?php p($user['used']); ?>
 			</td>
+			<!-- Jawinton::begin -->
+			<?php if(! (bool) $_['isadmin']): ?>
+				<td class="status">
+					<?php if($user['name']!=OC_User::getUser()):?>
+						<?php if (OC_User::isenabled($user['name'])): ?>
+							<a href="#" class="action disable" original-title="<?php p($l->t('Disable'))?>">
+								<img src="<?php print_unescaped(image_path('group_custom', 'disable.png')) ?>" class="status" />
+							</a>
+						<?php else: ?>
+							<a href="#" class="action enable" original-title="<?php p($l->t('Enable'))?>">
+								<img src="<?php print_unescaped(image_path('group_custom', 'enable.png')) ?>" class="status" />
+							</a>
+						<?php endif; ?>
+					<?php endif; ?>
+				</td>
+			<?php endif; ?>
+			<!-- Jawinton::end -->
+
 			<td class="remove">
 				<?php if($user['name']!=OC_User::getUser()):?>
-					<a href="#" class="action delete" original-title="<?php p($l->t('Delete'))?>">
-						<img src="<?php print_unescaped(image_path('core', 'actions/delete.svg')) ?>" class="svg" />
-					</a>
 					<a href="#" class="action delete" original-title="<?php p($l->t('Delete'))?>">
 						<img src="<?php print_unescaped(image_path('core', 'actions/delete.svg')) ?>" class="svg" />
 					</a>

@@ -94,4 +94,5 @@
 "Please connect to this ownCloud instance via HTTPS to enable or disable the SSL enforcement." => "请使用HTTPS连接到该ownCloud实例环境以启用或者禁用强制SSL连接服务.",
 "Log" => "log记录",
 "Log level" => "log记录级别",
+"Unable to change user status" => "修改用户状态失败"
 );

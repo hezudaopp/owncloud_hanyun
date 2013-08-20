@@ -41,6 +41,10 @@ $this->create('settings_ajax_changepassword', '/settings/ajax/changepassword.php
 	->actionInclude('settings/ajax/changepassword.php');
 $this->create('settings_ajax_changedisplayname', '/settings/ajax/changedisplayname.php')
 	->actionInclude('settings/ajax/changedisplayname.php');
+// Jawinton::begin
+$this->create('settings_ajax_changestatus', '/settings/ajax/changestatus.php')
+	->actionInclude('settings/ajax/changestatus.php');
+// Jawinton::end
 // personel
 $this->create('settings_ajax_lostpassword', '/settings/ajax/lostpassword.php')
 	->actionInclude('settings/ajax/lostpassword.php');

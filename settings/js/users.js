@@ -96,6 +96,38 @@ var UserList = {
 		}
 	},
 
+	// Jawinton::begin
+	// do_change_status: function (uid) {
+	// 	if (uid) {
+	// 		$.ajax({
+	// 			type: 'POST',
+	// 			url: OC.filePath('settings', 'ajax', 'changestatus.php'),
+	// 			async: false,
+	// 			data: { uid: uid },
+	// 			success: function (result) {
+	// 				if (result.status == 'success') {
+	// 					// $('tr').filterAttr('data-uid', uid).('<img class="status">').attr({
+	// 					// 	src: OC.imagePath('group_custom', 'enable.png')
+	// 					// });
+	// 						oc.dialogs.alert(result.data.uid, result.data.status);
+	// 					if (ready) {
+	// 						ready();
+	// 					}
+	// 				} else {
+	// 					oc.dialogs.alert(result.data.message, t('settings', 'Unable to change user status'));
+	// 				}
+	// 			}
+	// 		});
+	// 	}
+	// },
+
+	// do_enable: function (uid) {
+	// 	$('tr').filterAttr('data-uid', uid).('<img class="svg action">').attr({
+	// 		src: OC.imagePath('group_custom', 'disable.png')
+	// 	});
+	// },
+	// Jawinton::end
+
 	add: function (username, displayname, groups, subadmin, quota, sort) {
 		var tr = $('tbody tr').first().clone();
 		tr.attr('data-uid', username);
@@ -120,6 +152,19 @@ var UserList = {
 			tr.find('td.subadmins').append(subadminSelect);
 			UserList.applyMultiplySelect(subadminSelect);
 		}
+		// Jawinton::begin
+		if (tr.find('td.status img').length == 0 && OC.currentUser != username) {
+			var status_img = $('<img class="svg action">').attr({
+				src: OC.imagePath('group_custom', 'disable.png')
+			});
+			var status_link = $('<a class="action diable">')
+				.attr({ href: '#', 'original-title': t('settings', 'Disable')})
+				.append(status_img);
+			tr.find('td.status').append(status_link);
+		} else if (OC.currentUser == username) {
+			tr.find('td.status a').remove();
+		}
+		// Jawinton::end
 		if (tr.find('td.remove img').length == 0 && OC.currentUser != username) {
 			var rm_img = $('<img class="svg action">').attr({
 				src: OC.imagePath('core', 'actions/delete')
@@ -425,6 +470,43 @@ $(document).ready(function () {
 			img.css('display', '');
 		});
 	});
+
+	// Jawinton::begin
+	$('table').on('click', 'td.status>a', function (event) {
+		var row = $(this).parent().parent();
+		var uid = $(row).attr('data-uid');
+		if (uid) {
+			$.post(
+				OC.filePath('settings', 'ajax', 'changestatus.php'),
+				{ uid: uid },
+				function (result) {
+					if (result.status == 'success') {
+						// $('tr').filterAttr('data-uid', uid).('<img class="status">').attr({
+						// 	src: OC.imagePath('group_custom', 'enable.png')
+						// });
+							// OC.dialogs.alert(result.data.uid, result.data.isenabled);
+						var status_image = 'disable.png';
+						var title = "Disable";
+						if (!result.data.isenabled) {
+							status_image = 'enable.png';
+							title = "Enable";
+						}
+						var user_tr = $('tr').filterAttr('data-uid', uid);
+						user_tr.find('td.status img').attr({
+							src: OC.imagePath('group_custom', status_image)
+						});
+						user_tr.find('td.status a').attr({ 
+							href: '#', 'original-title': t('settings', title)
+						});
+					} else {
+						OC.dialogs.alert(result.data.message, t('settings', 'Unable to change user status'));
+					}
+				}
+			);
+		}
+	});
+	// Jawinton::end
+
 	$('table').on('click', 'td.displayName', function (event) {
 		$(this).children('img').click();
 	});
