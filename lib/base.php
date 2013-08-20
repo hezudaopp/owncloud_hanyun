@@ -415,9 +415,10 @@ class OC {
 		//Let´s try to overwrite some defaults anyways
 
 		//try to set the maximum execution time to 60min
-		@set_time_limit(3600);
-		@ini_set('max_execution_time', 3600);
-		@ini_set('max_input_time', 3600);
+		// Jawinton, change from 3600 to 18000
+		@set_time_limit(18000);
+		@ini_set('max_execution_time', 18000);
+		@ini_set('max_input_time', 18000);
 
 		//try to set the maximum filesize to 10G
 		@ini_set('upload_max_filesize', '10G');
