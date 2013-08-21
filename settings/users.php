@@ -103,7 +103,11 @@ $tmpl->assign( 'issubadmin', (int) $issubadmin);	// Jawinton
 $tmpl->assign( 'group_all', OC_Helper::humanFileSize($groupAll));	// Jawinton
 $tmpl->assign( 'group_used', OC_Helper::humanFileSize($groupUsed));	// Jawinton
 $tmpl->assign( 'group_assigned', OC_Helper::humanFileSize($groupAssigned));	// Jawinton
-$tmpl->assign( 'group_unassigned', OC_Helper::humanFileSize($groupAll-$groupAssigned));	// Jawinton
+$groupUnassigned = ($groupAll - $groupAssigned) > 0 ? ($groupAll - $groupAssigned) : ($groupAssigned - $groupAll);	// Jawinton
+if ($groupAll - $groupAssigned > 0)
+	$tmpl->assign( 'group_unassigned', OC_Helper::humanFileSize($groupUnassigned));	// Jawinton
+else
+	$tmpl->assign( 'group_unassigned', '-'.OC_Helper::humanFileSize($groupUnassigned));	// Jawinton
 $tmpl->assign( 'subadmins', $subadmins);
 $tmpl->assign( 'numofgroups', count($accessiblegroups));
 $tmpl->assign( 'quota_preset', $quotaPreset);
