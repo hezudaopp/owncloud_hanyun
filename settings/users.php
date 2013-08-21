@@ -26,11 +26,11 @@ $recoveryAdminEnabled = OC_App::isEnabled('files_encryption') &&
 
 if($isadmin) {
 	$accessiblegroups = OC_Group::getGroups();
-	$accessibleusers = OC_User::getDisplayNames('', 30);
+	$accessibleusers = OC_User::getDisplayNames('');	// remove the second argument
 	$subadmins = OC_SubAdmin::getAllSubAdmins();
 }else{
 	$accessiblegroups = OC_SubAdmin::getSubAdminsGroups(OC_User::getUser());
-	$accessibleusers = OC_Group::displayNamesInGroups($accessiblegroups, '', 30);
+	$accessibleusers = OC_Group::displayNamesInGroups($accessiblegroups, '');	// remove the third argument
 	// Jawinton, subadmin can manager their group admins
 	$subadmins = OC_SubAdmin::getSubAdminsGroups(OC_User::getUser());
 	// $subadmins = false;

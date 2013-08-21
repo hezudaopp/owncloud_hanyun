@@ -27,12 +27,16 @@ if( in_array( $groupname, OC_Group::getGroups())) {
 	exit();
 }
 
-// Group size less than unallocated size
+// Group size should be less than unused size
 $storageInfo = OC_Helper::getStorageInfo();
-$groupAll = $storageInfo['total'];
-$groupAssigned = OC_Group::getGroupAssigned('admin');
-$groupUnassigned = $groupAll - $groupAssigned;
-if ($groupstorage > $groupUnassigned) {
+$allStorage = $storageInfo['total'];
+$usedStorage = 0;
+$allUsers = OC_User::getUsers();
+foreach ($allUsers as $user) {
+	$usedStorage += OC_Helper::computerFileSize(OC_User::getStorageInfo($user));
+}
+$unused = $allStorage - $usedStorage;
+if ($groupstorage > $unused) {
 	OC_JSON::error(array("data" => array( "message" => "No enough space" )));
 	exit();
 }
