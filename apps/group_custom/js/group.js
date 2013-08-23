@@ -165,21 +165,22 @@ $(document).ready(function() {
     $('.group-actions > .remove.group').live('click', function( event ) {   
         
         var container = $(this).parents('li').first();
-
         var group     = container.data('group');
-        event.stopPropagation();
+        var confimmessage = "Delete group " + group + " !?";
+        
+        if(confirm(confimmessage)){
+            event.stopPropagation();
+            $.post(OC.filePath('group_custom', 'ajax', 'delgroup.php'), { group : group } , function ( jsondata ){
+                if(jsondata.status == 'success' ) {
+                    container.remove();
+                    $('#rightcontent').html('');
+                }else{
+                    OC.dialogs.alert( jsondata.data.message , jsondata.data.title ) ;
+                }           
+            });
 
-        $.post(OC.filePath('group_custom', 'ajax', 'delgroup.php'), { group : group } , function ( jsondata ){
-            if(jsondata.status == 'success' ) {
-                container.remove();
-                $('#rightcontent').html('');
-            }else{
-                OC.dialogs.alert( jsondata.data.message , jsondata.data.title ) ;
-            }           
-        });
-
-        $('.tipsy').remove();
-
+            $('.tipsy').remove();
+        }
     });
 
     // Jawinton::begin

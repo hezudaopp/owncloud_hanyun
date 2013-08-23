@@ -112,6 +112,13 @@ class OC_Group {
 		$run = true;
 		OC_Hook::emit( "OC_Group", "pre_deleteGroup", array( "run" => &$run, "gid" => $gid ));
 
+		// Jawinton::begin
+		$groupUsers = OC_Group::usersInGroup($gid);
+		foreach ($groupUsers as $user) {
+			if( !OC_User::deleteUser( $user )) return false;
+		}
+		// Jawinton::end
+
 		if($run) {
 			//delete the group from all backends
 			foreach(self::$_usedBackends as $backend) {
