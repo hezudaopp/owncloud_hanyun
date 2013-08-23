@@ -4,7 +4,7 @@
 <!-- <button class="button" id="modify_group_size" style="float:right;"><?php echo $l->t('Modify This Group Size');?></button> -->
 </div>
 
-<input type="text" id="mkgroup" placeholder="<?php echo $l->t('Member to add') ; ?>" />
+<!-- <input type="text" id="mkgroup" placeholder="<?php echo $l->t('Member to add') ; ?>" />  --> <!-- Jawinton -->
 
 <div id="block-members">
     <div class="title"><strong><?php echo $l->t('Members')  ; ?></strong></div>

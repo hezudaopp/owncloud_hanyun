@@ -6,7 +6,8 @@
 
 <?php $defaults = new OC_Defaults(); // initialize themable default strings and urls ?>
 
-<div class="clientsbox">
+<!-- Jawinton::begin -->
+<!-- <div class="clientsbox">
 	<h2><?php p($l->t('Get the apps to sync your files'));?></h2>
 	<a href="<?php p($_['clients']['desktop']); ?>" target="_blank">
 		<img src="<?php print_unescaped(OCP\Util::imagePath('core', 'desktopapp.png')); ?>" />
@@ -20,8 +21,8 @@
 	<?php if(OC_APP::isEnabled('firstrunwizard')) {?>
 	<center><a class="button" href="#" id="showWizard"><?php p($l->t('Show First Run Wizard again'));?></a></center>
 	<?php }?>
-</div>
-
+</div> -->
+<!-- Jawinton::end -->
 
 <div id="quota" class="personalblock">
 	<div style="width:<?php p($_['usage_relative']);?>%;">
@@ -99,30 +100,35 @@ if($_['passwordChangeSupported']) {
 	</fieldset>
 </form>
 
-<fieldset class="personalblock">
+<!-- Jawinton::begin -->
+<!-- <fieldset class="personalblock">
 	<legend><strong><?php p($l->t('WebDAV'));?></strong></legend>
 	<code><?php print_unescaped(OC_Helper::linkToRemote('webdav')); ?></code><br />
-	<!-- Jawinton -->
-	<em><?php print_unescaped($l->t("Use this address to")); ?>
+		<em><?php print_unescaped($l->t("Use this address to")); ?>
 		<a href='<?php p($defaults->getDocBaseUrl()); ?>/server/5.0/user_manual/files/files.html' target='_blank'>
 		<?php print_unescaped($l->t("access your Files via WebDAV")); ?>
 		</a>
 	</em>
-</fieldset>
+</fieldset> -->
+<!-- Jawinton::end -->
 
 <?php foreach($_['forms'] as $form) {
 	print_unescaped($form);
 };?>
 
-<fieldset class="personalblock">
+<!-- Jawinton::begin -->
+<!-- <fieldset class="personalblock">
 	<legend><strong><?php p($l->t('Version'));?></strong></legend>
 	<strong><?php p($defaults->getName()); ?></strong> <?php p(OC_Util::getVersionString()); ?><br/>
 <?php if (OC_Util::getEditionString() === ''): ?>
 	<?php print_unescaped($l->t('Developed by the <a href="http://ownCloud.org/contact" target="_blank">ownCloud community</a>, the <a href="https://github.com/owncloud" target="_blank">source code</a> is licensed under the <a href="http://www.gnu.org/licenses/agpl-3.0.html" target="_blank"><abbr title="Affero General Public License">AGPL</abbr></a>.')); ?>
 <?php endif; ?>
 </fieldset>
+
 <fieldset class="personalblock credits-footer">
 <p>
 	<?php print_unescaped($defaults->getShortFooter()); ?>
 </p>
 </fieldset>
+-->
+<!-- Jawinton::end -->

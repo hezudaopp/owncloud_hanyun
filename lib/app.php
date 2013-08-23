@@ -353,13 +353,15 @@ class OC_App{
 		if(OC_Util::getEditionString() === '' &&
 			OC_Config::getValue('knowledgebaseenabled', true)==true) {
 			$settings = array(
-				array(
-					"id" => "help",
-					"order" => 1000,
-					"href" => OC_Helper::linkToRoute( "settings_help" ),
-					"name" => $l->t("Help"),
-					"icon" => OC_Helper::imagePath( "settings", "help.svg" )
-				)
+				// Jawinton::begin
+				// array(
+				// 	"id" => "help",
+				// 	"order" => 1000,
+				// 	"href" => OC_Helper::linkToRoute( "settings_help" ),
+				// 	"name" => $l->t("Help"),
+				// 	"icon" => OC_Helper::imagePath( "settings", "help.svg" )
+				// )
+				// Jawinton::end
 			);
 		}
 

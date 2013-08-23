@@ -90,6 +90,7 @@ if (!$_['internetconnectionworking']) {
 }
 ;?>
 
+<!-- Jawinton::begin --><!-- 
 <fieldset class="personalblock" id="backgroundjobs">
 	<legend><strong><?php p($l->t('Cron'));?></strong></legend>
 	<table class="nostyle">
@@ -124,7 +125,8 @@ if (!$_['internetconnectionworking']) {
 			</td>
 		</tr>
 	</table>
-</fieldset>
+</fieldset>-->
+<!-- Jawinton::end -->
 
 <fieldset class="personalblock" id="shareAPI">
 	<legend><strong><?php p($l->t('Sharing'));?></strong></legend>
@@ -227,7 +229,8 @@ endfor;?>
 
 </fieldset>
 
-<fieldset class="personalblock">
+<!-- Jawinton::begin -->
+<!-- <fieldset class="personalblock">
 	<legend><strong><?php p($l->t('Version'));?></strong></legend>
 	<strong><?php p($defaults->getName()); ?></strong> <?php p(OC_Util::getVersionString()); ?>
 <?php if (OC_Util::getEditionString() === ''): ?>
@@ -239,4 +242,5 @@ endfor;?>
 <p>
 	<?php print_unescaped($defaults->getShortFooter()); ?>
 </p>
-</fieldset>
+</fieldset> -->
+<!-- Jawinton::end -->
