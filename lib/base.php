@@ -423,7 +423,7 @@ class OC {
 		//try to set the maximum filesize to 10G
 		@ini_set('upload_max_filesize', '10G');
 		@ini_set('post_max_size', '10G');
-		@ini_set('file_uploads', '50');
+		@ini_set('file_uploads', '500');
 
 		//copy http auth headers for apache+php-fcgid work around
 		if (isset($_SERVER['HTTP_XAUTHORIZATION']) && !isset($_SERVER['HTTP_AUTHORIZATION'])) {
