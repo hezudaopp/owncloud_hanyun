@@ -8,7 +8,7 @@
 "New Group" => "新建组" ,
 "Add Member" => "添加成员" ,
 "Delete Member" => "删除该成员" ,
-"Delete Group" => "删除该组" ,
+"Delete Group" => "删除组" ,
 "Make Group" => "创建组" ,
 "insert the new group" => "添加新组" ,
 "Choose another name" => "请另选组名称",

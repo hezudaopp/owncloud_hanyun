@@ -166,7 +166,8 @@ $(document).ready(function() {
         
         var container = $(this).parents('li').first();
         var group     = container.data('group');
-        var confimmessage = "Delete group " + group + " !?";
+        var confimmessage = t("group_custom", "Delete Group");
+        confimmessage += " '" +  group + "' ?";
         
         if(confirm(confimmessage)){
             event.stopPropagation();
