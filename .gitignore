@@ -1,4 +1,9 @@
 
 config/config.php
+data/owncloud.db
 
-config/config.php
+data/owncloud.log
+
+.DS_Store
+
+.DS_Store
