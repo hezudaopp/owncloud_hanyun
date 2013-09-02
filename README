@@ -29,7 +29,12 @@ http服务器可以任选
 @ini_set('file_uploads', '500');
 
 
-
+GreenCloud gives users universal access to their files through a web in-
+terface or WebDAV. It also provides a platform to easily view & sync con-
+tacts, calendars and bookmarks across all devices like desktops and mo-
+bile phones and enables basic editing right on the web. GreenCloud is
+derived from a open source software called ownCloud. We improve it by
+adding thorough authority and grouping management. 
 
 
 
